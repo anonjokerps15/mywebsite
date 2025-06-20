@@ -153,8 +153,8 @@
   const rightBG = document.getElementById('rightBG');
 
   function changeBackgrounds() {
-    leftBG.style.backgroundImage = url(${images[indexLeft]});
-    rightBG.style.backgroundImage = url(${images[indexRight]});
+  leftBG.style.backgroundImage = `url(${images[indexLeft]})`;
+rightBG.style.backgroundImage = `url(${images[indexRight]})`;
 
     indexLeft = (indexLeft + 1) % images.length;
     indexRight = (indexRight + 1) % images.length;
@@ -303,8 +303,8 @@
   const rightBG = document.getElementById('rightBG');
 
   function changeBackgrounds() {
-    leftBG.style.backgroundImage = url(${images[indexLeft]});
-    rightBG.style.backgroundImage = url(${images[indexRight]});
+leftBG.style.backgroundImage = `url(${images[indexLeft]})`;
+rightBG.style.backgroundImage = `url(${images[indexRight]})`;
 
     indexLeft = (indexLeft + 1) % images.length;
     indexRight = (indexRight + 1) % images.length;
