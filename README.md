@@ -1,13 +1,14 @@
 # Oksana Live Room
 
-موقع HTML بسيط مصمم بتصميم أنيق يحتوي على نموذج تفاعلي وصفحة جذابة.  
-تم تصميمه باستخدام HTML + CSS + JavaScript مع صور خلفية متغيرة وتأثيرات بصرية.
+A simple and elegant HTML website featuring a styled form and background effects.  
+Developed using HTML, CSS, and JavaScript with animated background transitions.
 
-## 📁 محتويات المشروع
+## Project Files
 
-- index.html — الصفحة الرئيسية للموقع.
-- README.md — هذا الملف التوضيحي.
+- index.html — The main webpage.
+- README.md — This documentation file.
 
-## 🚀 طريقة العرض
+## Hosting with GitHub Pages
 
-تم رفع الموقع باستخدام GitHub Pages. يمكنك زيارته من خلال الرابط التالي:
+This project is set up to be hosted using GitHub Pages.
+
